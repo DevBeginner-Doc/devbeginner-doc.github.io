@@ -1,0 +1,23 @@
+name: pages sync to server
+
+on:
+  push:
+    branches: [ "gh-pages" ]
+
+jobs:
+  sync-to-server:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: sync to server
+      uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+      with:
+        host: ${{ secrets.CN_ADDR }}
+        port: ${{ secrets.CN_PORT }}
+        user: ${{ secrets.CN_USER }}
+        key: ${{ secrets.CN_AUTHKEY }}
+        connect_timeout: 20s
+        first_ssh: |
+          cd /home/caddy-sites/source/devbeginner-doc.github.io/
+        last_ssh: |
+          git pull origin
